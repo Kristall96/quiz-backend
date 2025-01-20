@@ -6,6 +6,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import path from "path";
 import pageRoutes from "./routes/pageRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 dotenv.config();
 connectDB();
 const app = express();
@@ -15,13 +16,15 @@ app.use(express.json());
 app.use(cors());
 app.use(express.static("public"));
 
-// Routes
+// Page Routes
 app.use("/", pageRoutes);
 app.use("/about", pageRoutes);
 app.use("/contact", pageRoutes);
 app.use("/user-profile", pageRoutes);
 app.use("/blog-posts", pageRoutes);
 app.use("/single-post", pageRoutes);
+// User Routes
+app.use("/users", userRoutes);
 
 // Server
 const PORT = process.env.PORT || 5000;
