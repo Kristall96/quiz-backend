@@ -1,0 +1,47 @@
+#bottom {
+  background-color: #4a4a4a;
+  margin: 0px;
+  padding: 0px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  height: 2vw;
+}
+#registerFooter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1vw;
+  background-color: #1e1e1e;
+}
+#registerFooter button {
+  border: 0.2vw solid white;
+  padding: 0.3vw;
+  border-radius: 2vw;
+  background-color: transparent;
+  color: white;
+  cursor: pointer;
+}
+#registerFooter button:hover {
+  border: 0.15vw solid white;
+  padding: 0.3vw;
+  border-radius: 2vw;
+  background-color: rgb(21, 154, 206);
+  color: white;
+  cursor: pointer;
+  animation: bounce 0.6s ease-in-out infinite;
+}
+#registerFooter button p {
+  font-weight: bold;
+  font-size: large;
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}

@@ -1,0 +1,13 @@
+#asideLeft,
+#asideRight,
+#mainContent {
+  border: 1px white solid;
+}
+
+#mainBar {
+  display: grid;
+  grid-template-columns: 10vw 1fr 15vw;
+  grid-template-rows: 40vw;
+  padding: 0px;
+  margin: 0px;
+}

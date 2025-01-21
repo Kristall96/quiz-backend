@@ -1,0 +1,51 @@
+nav {
+  display: grid;
+  grid-template-columns: 15vw 1fr 30vw;
+}
+nav #logo,
+#menu,
+#leftMenu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.3vw;
+  border: 1px solid white;
+}
+nav #leftMenu ul {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  gap: 1.5vw;
+  margin: 0;
+}
+nav #logo img {
+  width: 4vw;
+}
+nav #menu ul {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5vw;
+  margin: 0;
+}
+nav #menu ul li {
+  list-style-type: none;
+  font-size: large;
+  font-weight: bold;
+}
+
+.menuText {
+  color: rgb(21, 154, 206);
+  text-decoration: none;
+}
+.menuText:hover {
+  color: rgb(115, 192, 223);
+  text-decoration: none;
+  text-decoration: underline rgb(148, 190, 207);
+}
+
+#leftMenu ul li {
+  list-style-type: none;
+  font-size: medium;
+  font-weight: 550;
+}
