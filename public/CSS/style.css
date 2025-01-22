@@ -1,10 +1,115 @@
-body {
-  background-color: black;
-  color: white;
-  padding: 0px;
-  margin: 0px;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+/* Define light theme variables */
+:root {
+  --background-color: rgb(170, 169, 169);
+  --text-color: black;
+  --button-bg-color: #ddd;
+  --button-text-color: black;
+  --toggle-background: #ddd;
+  --toggle-active-background: #444;
 }
+
+/* Define dark theme variables */
+[data-theme="dark"] {
+  --background-color: black;
+  --text-color: white;
+  --button-bg-color: #444;
+  --button-text-color: white;
+  --toggle-background: #444;
+  --toggle-active-background: #ddd;
+}
+
+/* Global styles */
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+  font-family: Arial, sans-serif;
+}
+
+#theme-toggle-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+button {
+  background-color: var(--toggle-background);
+  border: none;
+  padding: 10px;
+  border-radius: 30px;
+  width: 60px;
+  height: 30px;
+  cursor: pointer;
+  outline: none;
+  position: relative;
+  transition: background-color 0.3s ease;
+}
+
+/* The sliding slider inside the button */
+#slider {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 24px;
+  height: 24px;
+  background-color: var(--button-bg-color);
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+}
+
+/* Sun and Moon icons */
+#sun-icon,
+#moon-icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  opacity: 0; /* Hidden initially */
+  visibility: hidden; /* Hidden initially */
+  transition: opacity 0.3s ease, visibility 0s 0.3s; /* Smooth opacity change */
+}
+
+#sun-icon {
+  left: 5px;
+}
+
+#moon-icon {
+  right: 5px;
+}
+
+/* Active state (when dark theme is active) */
+[data-theme="dark"] #slider {
+  transform: translateX(30px);
+}
+
+[data-theme="dark"] #sun-icon {
+  opacity: 0;
+  visibility: hidden;
+}
+
+[data-theme="dark"] #moon-icon {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Light theme: Show sun icon */
+[data-theme="light"] #sun-icon {
+  opacity: 1;
+  visibility: visible;
+}
+
+[data-theme="light"] #moon-icon {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Hover effect on the button */
+button:hover {
+  opacity: 0.8;
+}
+
 td {
   border: 1px solid red;
 }

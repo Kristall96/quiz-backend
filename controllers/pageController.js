@@ -26,3 +26,9 @@ export function getBlogPost(req, res) {
 export function getSinglePost(req, res) {
   res.sendFile(path.join(__dirname, "../public/HTML/singlePost.html"));
 }
+export function getLogin(req, res) {
+  res.sendFile(path.join(__dirname, "../public/HTML/login.html"));
+}
+export function getRegister(req, res) {
+  res.sendFile(path.join(__dirname, "../public/HTML/register.html"));
+}

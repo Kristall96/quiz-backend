@@ -23,6 +23,8 @@ app.use("/contact", pageRoutes);
 app.use("/user-profile", pageRoutes);
 app.use("/blog-posts", pageRoutes);
 app.use("/single-post", pageRoutes);
+app.use("/login", pageRoutes);
+app.use("/register", pageRoutes);
 // User Routes
 app.use("/users", userRoutes);
 

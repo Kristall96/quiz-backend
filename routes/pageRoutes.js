@@ -6,6 +6,8 @@ import {
   getUserProfile,
   getBlogPost,
   getSinglePost,
+  getLogin,
+  getRegister,
 } from "../controllers/pageController.js";
 
 const router = Router();
@@ -16,5 +18,7 @@ router.get("/contact", getContact);
 router.get("/user-profile", getUserProfile);
 router.get("/blog-posts", getBlogPost);
 router.get("/single-post", getSinglePost);
+router.get("/login", getLogin);
+router.get("/register", getRegister);
 
 export default router;
