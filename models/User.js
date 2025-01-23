@@ -4,7 +4,7 @@ const { Schema, model } = mongoose;
 
 // Define the schema
 const userSchema = new Schema({
-  name: {
+  username: {
     type: String,
     required: true, // Makes this field mandatory
     trim: true, // Removes leading/trailing whitespaces

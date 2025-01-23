@@ -6,8 +6,24 @@
 
 #mainBar {
   display: grid;
-  grid-template-columns: 10vw 1fr 15vw;
-  grid-template-rows: 40vw;
+  grid-template-columns: 10vw 1fr 12.5vw;
+  grid-template-rows: 43.2vw;
   padding: 0px;
   margin: 0px;
+}
+
+#rightDiv #rightUl {
+  padding: 0px;
+  margin: 0px;
+  border: 1px solid black;
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+}
+#rightDiv #rightUl .rightLi img {
+  width: 11.9vw;
+  height: 15vh;
+}
+#rightDiv #rightUl .rightLi {
+  text-align: center;
 }

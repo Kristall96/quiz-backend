@@ -7,6 +7,8 @@ import jwt from "jsonwebtoken";
 import path from "path";
 import pageRoutes from "./routes/pageRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import blogRouter from "./routes/blogRoutes.js";
+import auth from "./routes/auth.js";
 dotenv.config();
 connectDB();
 const app = express();
@@ -22,11 +24,15 @@ app.use("/about", pageRoutes);
 app.use("/contact", pageRoutes);
 app.use("/user-profile", pageRoutes);
 app.use("/blog-posts", pageRoutes);
-app.use("/single-post", pageRoutes);
+app.use("/singlePost", pageRoutes);
 app.use("/login", pageRoutes);
 app.use("/register", pageRoutes);
 // User Routes
 app.use("/users", userRoutes);
+// Blog Post Routes
+app.use("/api", auth);
+app.use("/api/blog", blogRouter);
+app.use("/api", blogRouter);
 
 // Server
 const PORT = process.env.PORT || 5000;

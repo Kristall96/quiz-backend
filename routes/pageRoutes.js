@@ -17,7 +17,7 @@ router.get("/about", getAbout);
 router.get("/contact", getContact);
 router.get("/user-profile", getUserProfile);
 router.get("/blog-posts", getBlogPost);
-router.get("/single-post", getSinglePost);
+router.get("/singlePost", getSinglePost);
 router.get("/login", getLogin);
 router.get("/register", getRegister);
 

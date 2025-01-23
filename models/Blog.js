@@ -59,6 +59,10 @@ const blogPostSchema = new Schema({
     type: Number,
     default: 0, // Count of likes on the post
   },
+  views: {
+    type: Number,
+    default: 0,
+  },
 });
 
 // Create and export the model
