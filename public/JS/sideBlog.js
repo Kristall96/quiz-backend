@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
     const posts = await response.json();
     const asideRight = document.getElementById("asideRight");
+
     posts.forEach((post) => {
       const div = document.createElement("div");
       div.id = "rightDiv";

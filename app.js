@@ -33,7 +33,10 @@ app.use("/users", userRoutes);
 app.use("/api", auth);
 app.use("/api/blog", blogRouter);
 app.use("/api", blogRouter);
-
+app.use("/api/users", userRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/update", userRoutes);
+app.use("/api/updates", userRoutes);
 // Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

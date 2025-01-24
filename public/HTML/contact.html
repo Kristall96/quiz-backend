@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../CSS/contact.css" />
     <link rel="stylesheet" href="../CSS/navBar.css" />
     <link rel="stylesheet" href="../CSS/aside.css" />
     <link rel="stylesheet" href="../CSS/footer.css" />
@@ -75,7 +76,42 @@
         </ul>
       </div>
     </nav>
+    <main id="contact">
+      <h1>Contact Us</h1>
+      <p>
+        We’d love to hear from you! If you have any questions, feedback, or just
+        want to get in touch, fill out the form below, and we’ll get back to you
+        as soon as possible.
+      </p>
 
+      <form>
+        <label for="name">Name</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          placeholder="Enter your name"
+          required />
+
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          placeholder="Enter your email"
+          required />
+
+        <label for="message">Message</label>
+        <textarea
+          id="message"
+          name="message"
+          rows="5"
+          placeholder="Type your message here"
+          required></textarea>
+
+        <button type="submit">Send Message</button>
+      </form>
+    </main>
     <footer>
       <div id="registerFooter">
         <p>Register for free</p>
