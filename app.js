@@ -2,9 +2,7 @@ import express from "express";
 import connectDB from "./config/db.js";
 import dotenv from "dotenv";
 import cors from "cors";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
-import path from "path";
+import cookieParser from "cookie-parser";
 import pageRoutes from "./routes/pageRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import blogRouter from "./routes/blogRoutes.js";
@@ -15,8 +13,8 @@ const app = express();
 
 // Middleware
 app.use(express.json());
+app.use(cookieParser());
 app.use(cors());
-// app.use(express.static("public"));
 // lets see what's gonna happen now
 // Page Routes
 app.use("/", pageRoutes);

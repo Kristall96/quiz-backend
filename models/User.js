@@ -6,31 +6,47 @@ const { Schema, model } = mongoose;
 const userSchema = new Schema({
   username: {
     type: String,
-    required: true, // Makes this field mandatory
-    trim: true, // Removes leading/trailing whitespaces
+    required: true,
+    trim: true,
+    unique: true,
   },
   email: {
     type: String,
     required: true,
-    unique: true, // Ensures unique email addresses
-    lowercase: true, // Converts the email to lowercase
-    match: [/\S+@\S+\.\S+/, "Invalid email format"], // Regex for email validation
+    unique: true,
+    lowercase: true,
+    match: [/\S+@\S+\.\S+/, "Invalid email format"],
   },
   password: {
     type: String,
     required: true,
-    minlength: 6, // Minimum password length
+    minlength: 6,
+  },
+  name: { type: String, trim: true, default: "" }, // Optional
+  surname: { type: String, trim: true, default: "" }, // Optional
+  phoneNumber: {
+    type: String,
+    trim: true,
+    unique: true,
+    match: [/^\+?\d{10,15}$/, "Invalid phone number format"],
+    default: "",
+  }, // Optional
+  address: {
+    street: { type: String, trim: true, default: "" }, // Optional
+    city: { type: String, trim: true, default: "" }, // Optional
+    postcode: { type: String, trim: true, default: "" }, // Optional
   },
   createdAt: {
     type: Date,
-    default: Date.now, // Sets default value to the current timestamp
+    default: Date.now,
   },
   isAdmin: {
     type: Boolean,
-    default: false, // Default to a regular user
+    default: false,
   },
   role: {
     type: String,
+    enum: ["user", "superUser", "moderator", "admin"],
     default: "user",
   },
   points: {
@@ -40,10 +56,6 @@ const userSchema = new Schema({
   refreshToken: {
     type: String,
     default: null,
-  },
-  tokenVersion: {
-    type: Number,
-    default: 0,
   },
 });
 
