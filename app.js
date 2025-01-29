@@ -13,7 +13,7 @@ connectDB();
 
 const app = express();
 
-// ✅ Fix CORS Configuration
+// ✅ Fix CORS Configuration (Ensures cookies work with frontend)
 app.use(
   cors({
     origin: "https://kristall96.github.io", // ✅ Replace with your frontend URL
@@ -24,15 +24,21 @@ app.use(
 );
 
 // ✅ Middleware
-app.use(express.json()); // Parse JSON data
+app.use(express.json()); // ✅ Parse JSON data
+app.use(express.urlencoded({ extended: true })); // ✅ Parse form data
 app.use(cookieParser()); // ✅ Enable cookie parsing for authentication
 
+// ✅ Debugging Middleware (Logs Every Request)
+app.use((req, res, next) => {
+  console.log(`🟢 ${req.method} ${req.url}`);
+  console.log("🔍 Cookies:", req.cookies);
+  next();
+});
+
 // ✅ API Routes
-app.use("/api", authRoutes); // Ensure authentication routes are correctly loaded
-app.use("/api/blog", blogRouter);
-app.use("/api/users", userRoutes);
-app.use("/api/update", userRoutes);
-app.use("/api/updates", userRoutes);
+app.use("/api/auth", authRoutes); // ✅ Authentication Routes
+app.use("/api/users", userRoutes); // ✅ User Routes
+app.use("/api/blog", blogRouter); // ✅ Blog Routes
 
 // ✅ Page Routes (Static Pages)
 app.use("/", pageRoutes);
@@ -43,12 +49,6 @@ app.use("/blog-posts", pageRoutes);
 app.use("/singlePost", pageRoutes);
 app.use("/login", pageRoutes);
 app.use("/register", pageRoutes);
-
-// ✅ Debugging Middleware (Logs Every Request)
-app.use((req, res, next) => {
-  console.log(`🟢 ${req.method} ${req.url}`);
-  next();
-});
 
 // ✅ Global Error Handling Middleware
 app.use((err, req, res, next) => {

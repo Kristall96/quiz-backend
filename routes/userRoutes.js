@@ -6,16 +6,17 @@ const router = express.Router();
 
 // PROFILE Route
 router.get("/profile", async (req, res) => {
-  try {
-    console.log("🔍 Checking profile...");
+  console.log("🟢 Incoming request to /api/users/profile");
 
+  try {
+    console.log("🔍 Cookies received:", req.cookies); // ✅ Check if token is received
     const token = req.cookies.refreshToken;
+
     if (!token) {
       console.error("❌ No token found!");
       return res.status(401).json({ error: "Unauthorized" });
     }
 
-    // Verify Token
     jwt.verify(
       token,
       process.env.REFRESH_TOKEN_SECRET,
@@ -25,7 +26,6 @@ router.get("/profile", async (req, res) => {
           return res.status(403).json({ error: "Forbidden" });
         }
 
-        // Find User in Database
         const user = await User.findById(decoded.id).select(
           "-password -refreshToken"
         );
