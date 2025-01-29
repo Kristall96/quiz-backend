@@ -17,7 +17,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 // app.use(express.static("public"));
-
+// lets see what's gonna happen now
 // Page Routes
 app.use("/", pageRoutes);
 app.use("/about", pageRoutes);
