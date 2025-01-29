@@ -79,9 +79,10 @@ router.post("/login", async (req, res) => {
     user.refreshToken = refreshToken;
     await user.save();
 
+    // ✅ Set HTTP-Only Cookie
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true, // ✅ Prevents client-side access
-      secure: true, // ✅ Ensures it works on HTTPS
+      secure: true, // ✅ Ensures HTTPS only
       sameSite: "Strict", // ✅ Prevents CSRF attacks
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
