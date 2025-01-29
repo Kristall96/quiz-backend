@@ -13,10 +13,10 @@ connectDB();
 
 const app = express();
 
-// ✅ Fix CORS Configuration (Ensures cookies work with frontend)
+// ✅ Improved CORS Configuration for Cross-Site Authentication
 app.use(
   cors({
-    origin: "https://kristall96.github.io", // ✅ Replace with your frontend URL
+    origin: "https://kristall96.github.io", // ✅ Your frontend URL
     credentials: true, // ✅ Allow sending cookies with requests
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
@@ -26,7 +26,7 @@ app.use(
 // ✅ Middleware
 app.use(express.json()); // ✅ Parse JSON data
 app.use(express.urlencoded({ extended: true })); // ✅ Parse form data
-app.use(cookieParser()); // ✅ Enable cookie parsing for authentication
+app.use(cookieParser()); // ✅ Enable cookie parsing
 
 // ✅ Debugging Middleware (Logs Every Request & Cookies)
 app.use((req, res, next) => {

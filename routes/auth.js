@@ -9,6 +9,7 @@ dotenv.config();
 const router = express.Router();
 router.use(cookieParser());
 
+// Function to generate tokens
 const generateAccessToken = (user) => {
   return jwt.sign(
     { id: user._id, role: user.role },
@@ -19,48 +20,39 @@ const generateAccessToken = (user) => {
 
 const generateRefreshToken = (user) => {
   return jwt.sign(
-    {
-      id: user.id,
-    },
+    { id: user._id },
     process.env.REFRESH_TOKEN_SECRET,
-    {
-      expiresIn: "7d",
-    }
+    { expiresIn: "7d" } // Longer-lived token
   );
 };
 
+// User Registration
 router.post("/register", async (req, res) => {
   try {
     const { username, email, password } = req.body;
 
     if (!username || !email || !password) {
-      return res.status(400).json({ error: "All Fields are required" });
+      return res.status(400).json({ error: "All fields are required" });
     }
 
-    const existingUser = await User.findOne({
-      $or: [{ username }, { email }],
-    });
+    const existingUser = await User.findOne({ $or: [{ username }, { email }] });
 
     if (existingUser) {
-      return res.status(400).json({ error: "User already Exist" });
+      return res.status(400).json({ error: "User already exists" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-
-    const newUser = new User({
-      username,
-      email,
-      password: hashedPassword,
-    });
+    const newUser = new User({ username, email, password: hashedPassword });
     await newUser.save();
-    res.status(200).json({ message: "User registered succesfully" });
+
+    res.status(201).json({ message: "User registered successfully" });
   } catch (err) {
-    console.error(`Register Error`, err);
+    console.error("🔥 Register Error:", err);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
-// Login
+// User Login
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -70,20 +62,15 @@ router.post("/login", async (req, res) => {
       return res.status(401).json({ error: "Invalid credentials" });
     }
 
-    const refreshToken = jwt.sign(
-      { id: user._id },
-      process.env.REFRESH_TOKEN_SECRET,
-      { expiresIn: "7d" }
-    );
-
+    const refreshToken = generateRefreshToken(user);
     user.refreshToken = refreshToken;
     await user.save();
 
-    // ✅ Set HTTP-Only Cookie
+    // ✅ Set HTTP-Only Secure Cookie
     res.cookie("refreshToken", refreshToken, {
-      httpOnly: true, // ✅ Prevents client-side access
-      secure: true, // ✅ Ensures HTTPS only
-      sameSite: "Strict", // ✅ Prevents CSRF attacks
+      httpOnly: true, // Prevents client-side access
+      secure: true, // Ensures HTTPS only
+      sameSite: "None", // Allows cross-site requests (important for GitHub Pages + Render)
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
@@ -97,6 +84,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
+// Token Refresh
 router.post("/refresh", async (req, res) => {
   const refreshToken = req.cookies.refreshToken;
   if (!refreshToken) return res.sendStatus(401);
@@ -110,11 +98,12 @@ router.post("/refresh", async (req, res) => {
     const newAccessToken = generateAccessToken(user);
     res.json({ accessToken: newAccessToken });
   } catch (err) {
-    console.error("Refresh Token Error:", err);
+    console.error("🔥 Refresh Token Error:", err);
     res.sendStatus(403);
   }
 });
 
+// User Logout
 router.post("/logout", async (req, res) => {
   try {
     const refreshToken = req.cookies.refreshToken;
@@ -125,11 +114,16 @@ router.post("/logout", async (req, res) => {
       await user.save();
     }
 
-    res.clearCookie("refreshToken");
+    res.clearCookie("refreshToken", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+    });
+
     res.status(200).json({ message: "Logged out successfully" });
   } catch (err) {
-    console.error("Logout Error:", err);
-    res.status(500).json({ error: "Internal server error" });
+    console.error("🔥 Logout Error:", err);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
