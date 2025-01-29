@@ -1,7 +1,48 @@
 import express from "express";
 import User from "../models/User.js";
+import jwt from "jsonwebtoken";
 
 const router = express.Router();
+
+// PROFILE Route
+router.get("/profile", async (req, res) => {
+  try {
+    console.log("🔍 Checking profile...");
+
+    const token = req.cookies.refreshToken;
+    if (!token) {
+      console.error("❌ No token found!");
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    // Verify Token
+    jwt.verify(
+      token,
+      process.env.REFRESH_TOKEN_SECRET,
+      async (err, decoded) => {
+        if (err) {
+          console.error("❌ Token verification failed!", err);
+          return res.status(403).json({ error: "Forbidden" });
+        }
+
+        // Find User in Database
+        const user = await User.findById(decoded.id).select(
+          "-password -refreshToken"
+        );
+        if (!user) {
+          console.error("❌ User not found!");
+          return res.status(404).json({ error: "User not found" });
+        }
+
+        console.log("✅ Profile fetched successfully:", user);
+        res.json(user);
+      }
+    );
+  } catch (err) {
+    console.error("🔥 Internal Server Error:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
 
 router.get("/", async (req, res) => {
   try {
