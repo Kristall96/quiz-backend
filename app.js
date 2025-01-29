@@ -28,10 +28,10 @@ app.use(express.json()); // ✅ Parse JSON data
 app.use(express.urlencoded({ extended: true })); // ✅ Parse form data
 app.use(cookieParser()); // ✅ Enable cookie parsing for authentication
 
-// ✅ Debugging Middleware (Logs Every Request)
+// ✅ Debugging Middleware (Logs Every Request & Cookies)
 app.use((req, res, next) => {
   console.log(`🟢 ${req.method} ${req.url}`);
-  console.log("🔍 Cookies:", req.cookies);
+  console.log("🔍 Received Cookies:", req.cookies);
   next();
 });
 
@@ -49,6 +49,11 @@ app.use("/blog-posts", pageRoutes);
 app.use("/singlePost", pageRoutes);
 app.use("/login", pageRoutes);
 app.use("/register", pageRoutes);
+
+// ✅ 404 Middleware (Handles Unknown Routes)
+app.use((req, res) => {
+  res.status(404).json({ error: "Route Not Found" });
+});
 
 // ✅ Global Error Handling Middleware
 app.use((err, req, res, next) => {

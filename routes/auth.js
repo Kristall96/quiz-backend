@@ -64,34 +64,35 @@ router.post("/register", async (req, res) => {
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
-
-    if (!email || !password) {
-      return res.status(400).json({ error: "All fileds are required" });
-    }
-
     const user = await User.findOne({ email });
 
     if (!user || !(await bcrypt.compare(password, user.password))) {
       return res.status(401).json({ error: "Invalid credentials" });
     }
 
-    const accessToken = generateAccessToken(user);
-    const refreshToken = generateRefreshToken(user);
-
-    res.cookie("refreshToken", refreshToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "Strict",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
+    const refreshToken = jwt.sign(
+      { id: user._id },
+      process.env.REFRESH_TOKEN_SECRET,
+      { expiresIn: "7d" }
+    );
 
     user.refreshToken = refreshToken;
     await user.save();
 
-    res.json({ accessToken });
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true, // ✅ Prevents client-side access
+      secure: true, // ✅ Ensures it works on HTTPS
+      sameSite: "Strict", // ✅ Prevents CSRF attacks
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
+
+    res.json({
+      message: "Login successful",
+      user: { username: user.username, email: user.email },
+    });
   } catch (err) {
-    console.error("Login Error:", err);
-    res.status(500).json({ error: "Internal server error" });
+    console.error("🔥 Login Error:", err);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
