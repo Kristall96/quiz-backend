@@ -14,8 +14,16 @@ const app = express();
 // Middleware
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors());
-// lets see what's gonna happen now
+
+app.use(
+  cors({
+    origin: "https://kristall96.github.io", // ✅ Your frontend domain
+    credentials: true, // ✅ Allow cookies & authentication headers
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
+
 // Page Routes
 app.use("/", pageRoutes);
 app.use("/about", pageRoutes);
