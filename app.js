@@ -2,10 +2,6 @@ import express from "express";
 import connectDB from "./config/db.js";
 import dotenv from "dotenv";
 import cors from "cors";
-<<<<<<< HEAD
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
-import path from "path";
 import pageRoutes from "./routes/pageRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import blogRouter from "./routes/blogRoutes.js";
@@ -20,7 +16,6 @@ app.use(cors());
 app.use(express.static("public"));
 
 // Page Routes
-=======
 import cookieParser from "cookie-parser";
 import pageRoutes from "./routes/pageRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
@@ -29,8 +24,6 @@ import authRoutes from "./routes/auth.js";
 
 dotenv.config();
 connectDB();
-
-const app = express();
 
 // ✅ Improved CORS Configuration for Cross-Site Authentication
 app.use(
@@ -60,7 +53,6 @@ app.use("/api/users", userRoutes); // ✅ User Routes
 app.use("/api/blog", blogRouter); // ✅ Blog Routes
 
 // ✅ Page Routes (Static Pages)
->>>>>>> 22e1fcc21fbc39b7ffa17983443bb7ed5a86df75
 app.use("/", pageRoutes);
 app.use("/about", pageRoutes);
 app.use("/contact", pageRoutes);
@@ -69,7 +61,7 @@ app.use("/blog-posts", pageRoutes);
 app.use("/singlePost", pageRoutes);
 app.use("/login", pageRoutes);
 app.use("/register", pageRoutes);
-<<<<<<< HEAD
+
 // User Routes
 app.use("/users", userRoutes);
 // Blog Post Routes
@@ -84,22 +76,21 @@ app.use("/api/updates", userRoutes);
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
-=======
 
-// ✅ 404 Middleware (Handles Unknown Routes)
-app.use((req, res) => {
-  res.status(404).json({ error: "Route Not Found" });
-});
+  // ✅ 404 Middleware (Handles Unknown Routes)
+  app.use((req, res) => {
+    res.status(404).json({ error: "Route Not Found" });
+  });
 
-// ✅ Global Error Handling Middleware
-app.use((err, req, res, next) => {
-  console.error("🔥 Global Error:", err);
-  res.status(500).json({ error: "Internal Server Error" });
-});
+  // ✅ Global Error Handling Middleware
+  app.use((err, req, res, next) => {
+    console.error("🔥 Global Error:", err);
+    res.status(500).json({ error: "Internal Server Error" });
+  });
 
-// ✅ Start Server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`🚀 Server running at http://localhost:${PORT}`);
->>>>>>> 22e1fcc21fbc39b7ffa17983443bb7ed5a86df75
+  // ✅ Start Server
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => {
+    console.log(`🚀 Server running at http://localhost:${PORT}`);
+  });
 });
