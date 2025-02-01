@@ -52,7 +52,7 @@ router.post("/register", async (req, res) => {
   }
 });
 
-// User Login
+// User Login in auth.js
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -62,21 +62,35 @@ router.post("/login", async (req, res) => {
       return res.status(401).json({ error: "Invalid credentials" });
     }
 
+    // Generate tokens
+    const accessToken = generateAccessToken(user);
     const refreshToken = generateRefreshToken(user);
+
+    // Save the refresh token in the database (if you're tracking it)
     user.refreshToken = refreshToken;
     await user.save();
 
-    // ✅ Set HTTP-Only Secure Cookie
+    // Set the refresh token in an HTTP-Only cookie
     res.cookie("refreshToken", refreshToken, {
-      httpOnly: true, // Prevents client-side access
-      secure: true, // Ensures HTTPS only
-      sameSite: "None", // Allows cross-site requests (important for GitHub Pages + Render)
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production", // Use HTTPS in production
+      sameSite: "None",
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
+    // Set the access token in an HTTP-Only cookie
+    res.cookie("accessToken", accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production", // Use HTTPS in production
+      sameSite: "None",
+      maxAge: 15 * 60 * 1000, // 15 minutes
+    });
+
+    // Optionally, also send the access token in the response body
     res.json({
       message: "Login successful",
       user: { username: user.username, email: user.email },
+      accessToken, // This can be used by your client for immediate use
     });
   } catch (err) {
     console.error("🔥 Login Error:", err);
