@@ -1,8 +1,43 @@
 import express from "express";
 import User from "../models/User.js";
+<<<<<<< HEAD
 
 const router = express.Router();
 
+=======
+import jwt from "jsonwebtoken";
+
+const router = express.Router();
+
+// PROFILE Route
+router.get("/profile", async (req, res) => {
+  console.log("🔍 Cookies received:", req.cookies);
+  const token = req.cookies.refreshToken;
+
+  if (!token) {
+    console.error("❌ No token provided");
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+
+  jwt.verify(token, process.env.REFRESH_TOKEN_SECRET, async (err, decoded) => {
+    if (err) {
+      console.error("❌ Token verification failed!", err);
+      return res.status(403).json({ error: "Forbidden" });
+    }
+
+    const user = await User.findById(decoded.id).select(
+      "-password -refreshToken"
+    );
+    if (!user) {
+      console.error("❌ User not found!");
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.json(user);
+  });
+});
+
+>>>>>>> 22e1fcc21fbc39b7ffa17983443bb7ed5a86df75
 router.get("/", async (req, res) => {
   try {
     const user = await User.find({}, "-password");
