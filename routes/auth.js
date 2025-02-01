@@ -72,16 +72,18 @@ router.post("/login", async (req, res) => {
 
     // Set the refresh token in an HTTP-Only cookie
     res.cookie("refreshToken", refreshToken, {
+      domain: "quiz-backend-rdcd.onrender.com", // explicitly set domain
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // Use HTTPS in production
+      secure: process.env.NODE_ENV === "production",
       sameSite: "None",
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
     // Set the access token in an HTTP-Only cookie
     res.cookie("accessToken", accessToken, {
+      domain: "quiz-backend-rdcd.onrender.com", // explicitly set domain
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // Use HTTPS in production
+      secure: process.env.NODE_ENV === "production",
       sameSite: "None",
       maxAge: 15 * 60 * 1000, // 15 minutes
     });
