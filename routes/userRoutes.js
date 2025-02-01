@@ -6,42 +6,30 @@ const router = express.Router();
 
 // PROFILE Route
 router.get("/profile", async (req, res) => {
-  console.log("🟢 Incoming request to /api/users/profile");
+  console.log("🔍 Cookies received:", req.cookies);
+  const token = req.cookies.refreshToken;
 
-  try {
-    console.log("🔍 Cookies received:", req.cookies); // ✅ Check if token is received
-    const token = req.cookies.refreshToken;
+  if (!token) {
+    console.error("❌ No token provided");
+    return res.status(401).json({ error: "Unauthorized" });
+  }
 
-    if (!token) {
-      console.error("❌ No token found!");
-      return res.status(401).json({ error: "Unauthorized" });
+  jwt.verify(token, process.env.REFRESH_TOKEN_SECRET, async (err, decoded) => {
+    if (err) {
+      console.error("❌ Token verification failed!", err);
+      return res.status(403).json({ error: "Forbidden" });
     }
 
-    jwt.verify(
-      token,
-      process.env.REFRESH_TOKEN_SECRET,
-      async (err, decoded) => {
-        if (err) {
-          console.error("❌ Token verification failed!", err);
-          return res.status(403).json({ error: "Forbidden" });
-        }
-
-        const user = await User.findById(decoded.id).select(
-          "-password -refreshToken"
-        );
-        if (!user) {
-          console.error("❌ User not found!");
-          return res.status(404).json({ error: "User not found" });
-        }
-
-        console.log("✅ Profile fetched successfully:", user);
-        res.json(user);
-      }
+    const user = await User.findById(decoded.id).select(
+      "-password -refreshToken"
     );
-  } catch (err) {
-    console.error("🔥 Internal Server Error:", err);
-    res.status(500).json({ error: "Internal server error" });
-  }
+    if (!user) {
+      console.error("❌ User not found!");
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.json(user);
+  });
 });
 
 router.get("/", async (req, res) => {

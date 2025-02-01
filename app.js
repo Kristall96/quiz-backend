@@ -16,8 +16,8 @@ const app = express();
 // ✅ Improved CORS Configuration for Cross-Site Authentication
 app.use(
   cors({
-    origin: "https://kristall96.github.io", // ✅ Your frontend URL
-    credentials: true, // ✅ Allow sending cookies with requests
+    origin: "https://kristall96.github.io", // Make sure this exactly matches your frontend URL
+    credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
